@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "FakeChar · 假身份生成与自动填充",
+  "version": "1.0.0",
+  "description": "16 国一致性假身份档案（美国为主），一键填入姓名/地址/电话/证件/银行卡。仅用于测试与演示。",
+  "permissions": ["storage", "contextMenus", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "FakeChar",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "lib/util.js",
+        "content/filler.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "commands": {
+    "fill-page": {
+      "suggested_key": { "default": "Alt+Shift+F" },
+      "description": "用当前身份填充页面"
+    },
+    "regen-fill": {
+      "suggested_key": { "default": "Alt+Shift+G" },
+      "description": "换一个身份并填充页面"
+    }
+  }
+}

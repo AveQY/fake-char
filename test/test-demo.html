@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>FakeChar · 填充测试页</title>
+  <style>
+    :root { --line: #d8dee9; --muted: #5c6675; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 28px; max-width: 980px; margin-inline: auto; font: 14px/1.55 system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; color: #1b2430; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 22px; }
+    section { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 18px; margin-bottom: 16px; }
+    h2 { font-size: 14px; margin: 0 0 12px; }
+    h2 span { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+    .full { grid-column: 1 / -1; }
+    label { display: block; font-size: 12px; color: #414c5c; margin-bottom: 3px; }
+    input, select, textarea { width: 100%; height: 32px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; background: #fff; }
+    textarea { height: 64px; padding: 6px 8px; }
+    .row { display: flex; gap: 10px; }
+    .row > div { flex: 1; }
+    .hint { font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+    #log { height: 150px; overflow: auto; background: #0f1620; color: #b6e3ff; border-radius: 8px; padding: 10px; font: 12px/1.5 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+    .bar { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    button { height: 32px; padding: 0 12px; border-radius: 7px; border: 1px solid var(--line); background: #fff; cursor: pointer; font: inherit; font-size: 13px; }
+    button:hover { background: #f3f6fa; }
+    iframe { width: 100%; height: 190px; border: 1px solid var(--line); border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>FakeChar 填充测试页</h1>
+  <p class="sub">先在扩展弹窗里选国家、生成身份，再回到本页点“填入当前页”。下面的日志会实时显示每个字段收到的事件。</p>
+
+  <div class="bar">
+    <button id="reset" type="button">重置表单</button>
+    <button id="clear" type="button">清空日志</button>
+    <span class="hint" id="stat"></span>
+  </div>
+
+  <section>
+    <h2>1. 标准英文表单 <span>全部字段带 autocomplete，最容易命中</span></h2>
+    <form class="grid" autocomplete="on">
+      <div><label for="f-first">First name</label><input id="f-first" name="firstName" autocomplete="given-name"></div>
+      <div><label for="f-last">Last name</label><input id="f-last" name="lastName" autocomplete="family-name"></div>
+      <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+      <div><label for="f-tel">Phone</label><input id="f-tel" name="phone" type="tel" autocomplete="tel"></div>
+      <div><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization"></div>
+      <div><label for="f-title">Job title</label><input id="f-title" name="jobTitle" autocomplete="organization-title"></div>
+      <div class="full"><label for="f-addr1">Street address</label><input id="f-addr1" name="address" autocomplete="street-address"></div>
+      <div><label for="f-city">City</label><input id="f-city" name="city" autocomplete="address-level2"></div>
+      <div><label for="f-state">State</label>
+        <select id="f-state" name="state" autocomplete="address-level1">
+          <option value="">Select state</option>
+          <option>California</option><option>New York</option><option>Texas</option><option>Florida</option>
+          <option>Illinois</option><option>Washington</option><option>Massachusetts</option><option>Colorado</option>
+        </select>
+      </div>
+      <div><label for="f-zip">ZIP code</label><input id="f-zip" name="zip" autocomplete="postal-code"></div>
+      <div><label for="f-country">Country</label>
+        <select id="f-country" name="country" autocomplete="country">
+          <option value="">Choose country</option>
+          <option value="US">United States</option><option value="GB">United Kingdom</option>
+          <option value="CA">Canada</option><option value="AU">Australia</option><option value="CN">China</option>
+          <option value="JP">Japan</option><option value="KR">South Korea</option><option value="DE">Germany</option>
+          <option value="FR">France</option><option value="IT">Italy</option><option value="ES">Spain</option>
+          <option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="BR">Brazil</option>
+          <option value="MX">Mexico</option><option value="IN">India</option>
+        </select>
+      </div>
+      <div><label for="f-bday">Date of birth</label><input id="f-bday" name="birthday" type="date" autocomplete="bday"></div>
+      <div><label for="f-cc">Card number</label><input id="f-cc" name="cc-number" autocomplete="cc-number"></div>
+      <div><label for="f-exp">Expiry</label><input id="f-exp" name="cc-exp" autocomplete="cc-exp" placeholder="MM/YY"></div>
+      <div><label for="f-cvv">CVV</label><input id="f-cvv" name="cc-csc" autocomplete="cc-csc"></div>
+      <div><label for="f-user">Username</label><input id="f-user" name="username" autocomplete="username"></div>
+      <div><label for="f-pass">Password</label><input id="f-pass" name="password" type="password" autocomplete="new-password"></div>
+      <div class="full"><label for="f-note">Note</label><textarea id="f-note" name="note" autocomplete="off"></textarea></div>
+    </form>
+  </section>
+
+  <section>
+    <h2>2. 中文表单 <span>标签在输入框旁边，靠 label 文本识别</span></h2>
+    <form class="grid">
+      <div class="row full">
+        <div><label>姓名</label><input name="xm"><span class="hint"></span></div>
+        <div><label>身份证号</label><input name="sfz"></div>
+      </div>
+      <div><label>手机号</label><input name="sjh" type="tel"></div>
+      <div><label>电子邮箱</label><input name="yx" type="email"></div>
+      <div><label>性别</label>
+        <select name="xb">
+          <option value="">请选择</option><option value="male">男</option><option value="female">女</option>
+        </select>
+      </div>
+      <div><label>出生日期</label><input name="csrq" placeholder="YYYY-MM-DD"></div>
+      <div class="full"><label>详细地址</label><input name="dz"></div>
+      <div><label>城市</label><input name="cs"></div>
+      <div><label>省份</label><input name="sheng"></div>
+      <div><label>邮政编码</label><input name="yzbm"></div>
+      <div><label>公司名称</label><input name="gsmc"></div>
+    </form>
+  </section>
+
+  <section>
+    <h2>3. 只有 placeholder / 非常规 name <span>测试模糊匹配</span></h2>
+    <form class="grid">
+      <div><input name="fname" placeholder="Your first name"></div>
+      <div><input name="lname" placeholder="Your last name"></div>
+      <div><input name="mail_addr" placeholder="name@example.com" type="email"></div>
+      <div><input name="phone_number" placeholder="Phone number" type="tel"></div>
+      <div class="full"><input name="addr_line" placeholder="Street address line 1"></div>
+      <div><input name="addr_line2" placeholder="Apartment, suite, unit"></div>
+      <div><input name="postal" placeholder="Zip / Postal code"></div>
+      <div><input name="region" placeholder="State / Province"></div>
+      <div class="full"><textarea name="comments" placeholder="Additional comments"></textarea></div>
+    </form>
+  </section>
+
+  <section>
+    <h2>4. iframe 内表单 <span>验证 all_frames 注入</span></h2>
+    <iframe title="iframe form" srcdoc="&lt;!doctype html&gt;&lt;html&gt;&lt;body style='font:13px system-ui;padding:14px'&gt;&lt;form&gt;&lt;div style='margin-bottom:6px'&gt;&lt;label&gt;Email&lt;/label&gt;&lt;input name='email' style='width:100%;height:30px'&gt;&lt;/div&gt;&lt;div style='margin-bottom:6px'&gt;&lt;label&gt;Full name&lt;/label&gt;&lt;input name='name' style='width:100%;height:30px'&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;City&lt;/label&gt;&lt;input name='city' style='width:100%;height:30px'&gt;&lt;/div&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    <p class="hint">iframe 是同源 srcdoc，content script 的 all_frames 应同时填充。</p>
+  </section>
+
+  <section>
+    <h2>事件日志 <span>input / change 事件会被真实派发（React/Vue 能收到）</span></h2>
+    <div id="log"></div>
+  </section>
+
+  <script>
+    const log = document.getElementById('log');
+    const stat = document.getElementById('stat');
+    let count = 0;
+
+    function append(text) {
+      const line = document.createElement('div');
+      line.textContent = text;
+      log.appendChild(line);
+      if (log.children.length > 400) log.removeChild(log.firstChild);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function describe(el) {
+      const label = el.name || el.id || el.getAttribute('autocomplete') || el.tagName.toLowerCase();
+      return label + (el.value ? ' = "' + String(el.value).slice(0, 38) + '"' : '');
+    }
+
+    document.addEventListener('input', (e) => {
+      count++;
+      append('[' + count + '] input  ' + describe(e.target));
+      stat.textContent = '已收到 ' + count + ' 个 input 事件';
+    }, true);
+
+    document.addEventListener('change', (e) => {
+      append('[' + count + '] change ' + describe(e.target));
+    }, true);
+
+    document.getElementById('reset').addEventListener('click', () => {
+      document.querySelectorAll('form').forEach((f) => f.reset());
+      count = 0;
+      append('--- 表单已重置 ---');
+      stat.textContent = '';
+    });
+
+    document.getElementById('clear').addEventListener('click', () => {
+      log.textContent = '';
+      count = 0;
+      stat.textContent = '';
+    });
+  </script>
+</body>
+</html>

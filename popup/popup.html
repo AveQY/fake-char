@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FakeChar</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">
+      <span class="logo">FC</span>
+      <div class="brand-text">
+        <h1>FakeChar</h1>
+        <p>一致性假身份 · 一键填表</p>
+      </div>
+    </div>
+    <button id="regen" class="round" title="重新生成（Alt+Shift+G）" aria-label="重新生成">↻</button>
+  </header>
+
+  <main class="page">
+    <div class="country-row card">
+      <label class="row-label" for="country">国家</label>
+      <select id="country" aria-label="选择国家"></select>
+      <button id="generate" class="link" type="button">生成</button>
+    </div>
+
+    <div id="profileCard" class="profile" aria-live="polite"></div>
+
+    <div class="actions">
+      <button id="fill" class="primary">填入当前页</button>
+      <div class="action-row">
+        <button id="fillEmpty" class="tinted">仅填空白</button>
+        <button id="highlight" class="tinted">高亮字段</button>
+      </div>
+    </div>
+
+    <section class="saved">
+      <div class="section-head">
+        <h2>已保存档案 <span id="savedCount" class="pill">0</span></h2>
+        <button id="save" class="link" type="button">保存当前</button>
+      </div>
+      <ul id="savedList" class="saved-list"></ul>
+    </section>
+
+    <section class="settings">
+      <label class="setting-row">
+        <span class="setting-label">打开页面自动填充</span>
+        <span class="switch">
+          <input type="checkbox" id="autoFill">
+          <span class="slider"></span>
+        </span>
+      </label>
+      <button id="copyJson" class="setting-row as-button" type="button">
+        <span class="setting-label">复制档案 JSON</span>
+        <span class="chev">›</span>
+      </button>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="../lib/util.js"></script>
+  <script src="../lib/data.js"></script>
+  <script src="../lib/ids.js"></script>
+  <script src="../lib/generator.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
